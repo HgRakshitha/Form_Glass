@@ -68,19 +68,23 @@ app.post('/api/auth/send-link', async (c) => {
     .bind(token, email.trim().toLowerCase(), expiresAt)
     .run()
 
-  // Print magic link to console for local testing
-  const magicLink = `http://localhost:5173/login/verify?token=${token}`
+  // Dynamically determine the frontend origin from the request headers
+  const origin = c.req.header('Origin') || 'http://localhost:5173'
+  const magicLink = `${origin}/login/verify?token=${token}`
   console.log('\n========================================================')
   console.log(`[AUTH] Magic Link requested for ${email}`)
   console.log(`[AUTH] URL: ${magicLink}`)
   console.log('========================================================\n')
 
-  // Return the magic link directly in the response for development convenience
+  // Security: only return devMagicLink in response JSON if running in local development mode.
+  // We identify local development if the request origin is localhost/127.0.0.1 or JWT_SECRET is not configured.
+  const isLocalDev =
+    origin.includes('localhost') || origin.includes('127.0.0.1') || !c.env.JWT_SECRET
+
   return c.json({
     status: 'ok',
     message: 'Magic link generated successfully.',
-    // Returning link here allows frontend to auto-login in dev mode
-    devMagicLink: magicLink,
+    ...(isLocalDev ? { devMagicLink: magicLink } : {}),
   })
 })
 
