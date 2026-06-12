@@ -10,33 +10,79 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginIndexRouteImport } from './routes/login.index'
+import { Route as SIdRouteImport } from './routes/s.$id'
+import { Route as LoginVerifyRouteImport } from './routes/login_.verify'
+import { Route as SurveysIdEditRouteImport } from './routes/surveys.$id.edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SIdRoute = SIdRouteImport.update({
+  id: '/s/$id',
+  path: '/s/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginVerifyRoute = LoginVerifyRouteImport.update({
+  id: '/login_/verify',
+  path: '/login/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SurveysIdEditRoute = SurveysIdEditRouteImport.update({
+  id: '/surveys/$id/edit',
+  path: '/surveys/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login/verify': typeof LoginVerifyRoute
+  '/s/$id': typeof SIdRoute
+  '/login/': typeof LoginIndexRoute
+  '/surveys/$id/edit': typeof SurveysIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login/verify': typeof LoginVerifyRoute
+  '/s/$id': typeof SIdRoute
+  '/login': typeof LoginIndexRoute
+  '/surveys/$id/edit': typeof SurveysIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login_/verify': typeof LoginVerifyRoute
+  '/s/$id': typeof SIdRoute
+  '/login/': typeof LoginIndexRoute
+  '/surveys/$id/edit': typeof SurveysIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/login/verify' | '/s/$id' | '/login/' | '/surveys/$id/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/login/verify' | '/s/$id' | '/login' | '/surveys/$id/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/login_/verify'
+    | '/s/$id'
+    | '/login/'
+    | '/surveys/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginVerifyRoute: typeof LoginVerifyRoute
+  SIdRoute: typeof SIdRoute
+  LoginIndexRoute: typeof LoginIndexRoute
+  SurveysIdEditRoute: typeof SurveysIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +94,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/s/$id': {
+      id: '/s/$id'
+      path: '/s/$id'
+      fullPath: '/s/$id'
+      preLoaderRoute: typeof SIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login_/verify': {
+      id: '/login_/verify'
+      path: '/login/verify'
+      fullPath: '/login/verify'
+      preLoaderRoute: typeof LoginVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/surveys/$id/edit': {
+      id: '/surveys/$id/edit'
+      path: '/surveys/$id/edit'
+      fullPath: '/surveys/$id/edit'
+      preLoaderRoute: typeof SurveysIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginVerifyRoute: LoginVerifyRoute,
+  SIdRoute: SIdRoute,
+  LoginIndexRoute: LoginIndexRoute,
+  SurveysIdEditRoute: SurveysIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

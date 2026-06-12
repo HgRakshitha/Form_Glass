@@ -6,7 +6,15 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/routeTree.gen.ts",
+      "!!**/.pnpm-store",
+      "!!**/.wrangler",
+      "!!**/dist",
+      "!!**/node_modules"
+    ]
   },
   "formatter": {
     "enabled": true,

@@ -1,7 +1,9 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { AuthProvider } from './AuthContext'
 import { routeTree } from './routeTree.gen'
+import './index.css'
 
 const router = createRouter({ routeTree })
 
@@ -16,6 +18,8 @@ if (!rootEl) throw new Error('root element missing')
 
 createRoot(rootEl).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 )
